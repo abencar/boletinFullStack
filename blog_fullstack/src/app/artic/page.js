@@ -43,9 +43,9 @@ export default function ListArtics() {
             {articulos.map((articulo) => (
                 <div key={articulo.id}>
                     <Link href={`/artic/${articulo.id}`}>
-                        <h2>{articulo.titulo}</h2>
-                        <h3>{articulo.autor}</h3>
-                        <h3>{articulo.fecha_publicacion}</h3>
+                        <h2>Titulo: {articulo.titulo}</h2>
+                        <h3>Autor: {articulo.autor}</h3>
+                        <h3>Fecha publicacion: {articulo.fecha_publicacion}</h3>
                     </Link>
                     <button onClick={() => deleteArtic(articulo.id)}>Eliminar articulo</button>
                 </div>

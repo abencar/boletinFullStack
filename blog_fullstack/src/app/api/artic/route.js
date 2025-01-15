@@ -20,7 +20,7 @@ export async function GET() {
 export async function POST(request) {
     const body = await request.json();
 
-    const { data: articulo, error } = await supabase.from("articulo").insert({titulo: body.titlo, autor: body.autor, contenido: body.contenido});
+    const { data: articulo, error } = await supabase.from("articulo").insert({titulo: body.titulo, autor: body.autor, contenido: body.contenido});
         
     if(error){
         return new Response(
@@ -28,12 +28,14 @@ export async function POST(request) {
             { headers: { "Content-Type": "application/json" } }
         );
     }
-    
+    if(body.titulo && body.autor && body.contenido){
+        if(body.titulo.length >= 150){
     return new Response(
         JSON.stringify({message: "Usuario agregado correctamente"}),
         { headers: { "Content-Type": "application/json" } }
     );
-    
+    }  
+}
 
 }
 
