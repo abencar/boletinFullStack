@@ -18,3 +18,4 @@ export async function GET(request) {
         return new Response(JSON.stringify({error: "No existe"}), {status: 404})
     }
 }
+

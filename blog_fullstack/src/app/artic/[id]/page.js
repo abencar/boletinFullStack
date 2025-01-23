@@ -5,27 +5,26 @@ import { use, useEffect, useState } from "react"
 
 export default function Contact({ params }) {
     const { id } = use(params)
-    const [articulo, setArticulo] = useState()
+    const [articulo, setContacto] = useState()
 
-    async function fetchArticulo() {
+    async function fetchContacto() {
         const url = await fetch("/api/artic/articdata?id=" + id)
         const cont = await url.json()
-        setArticulo(cont[0])
+        setContacto(cont[0])
     }
 
     useEffect(() => {
-        fetchArticulo()
+        fetchContacto()
     }, []) 
 
     if (articulo) {
         return (
             <div>
-                <h1>Información de Contacto</h1>
-                <p>Titulo: {articulo.titulo}</p>
-                <p>Contenido: {articulo.contenido}</p>
-                <p>Autor: {articulo.autor}</p>
-                <p>Fecha de publicacion: {articulo.fecha_publicacion}</p>
-                <br />
+                <h1>{articulo.titulo}</h1>
+                <h2>{articulo.autor}</h2>
+                <p>{articulo.fecha_publicacion}</p>
+                <p>{articulo.contenido}</p>
+            
                 <Link href="/artic">Volver</Link>
             </div>)
     } else {
