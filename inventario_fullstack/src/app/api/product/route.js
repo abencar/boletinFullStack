@@ -5,14 +5,14 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 const supabase = createClient(supabaseUrl, supabaseKey)
 
 export async function GET() {
-    const { data: articulo, error } = await supabase.from("producto").select("*");
+    const { data: producto, error } = await supabase.from("producto").select("*");
 
     if(error){ 
-        return new Response(JSON.stringify({error: "No se han podido cargar los articulos"}), {status: 404}) 
+        return new Response(JSON.stringify({error: "No se han podido cargar los productos"}), {status: 404}) 
     }
 
     return new Response(
-        JSON.stringify(articulo),
+        JSON.stringify(producto),
         { status: 200, headers: { "Content-Type": "application/json" } }
     );
 }
@@ -20,11 +20,11 @@ export async function GET() {
 export async function POST(request) {
     const body = await request.json();
 
-    const { data: articulo, error } = await supabase.from("articulo").insert({titulo: body.titlo, autor: body.autor, contenido: body.contenido});
+    const { data: producto, error } = await supabase.from("producto").insert({nombre: body.nombre, precio: body.precio, stock: body.stock, descripcion: body.descripcion});
         
     if(error){
         return new Response(
-            JSON.stringify({message: "El articulo no se ha podido agregar"}),
+            JSON.stringify({message: "El producto no se ha podido agregar"}),
             { headers: { "Content-Type": "application/json" } }
         );
     }
@@ -34,13 +34,35 @@ export async function POST(request) {
         { headers: { "Content-Type": "application/json" } }
     );
     
-
 }
+
+
+export async function PUT(request){
+    const body = await request.json();
+    const { data, error } = await supabase
+    .from("producto")
+    .update({stock: body.stock})
+    .eq("id", body.id);
+
+    console.log("Supabase response:", { data, error });
+
+    if(error){
+        return new Response(
+            JSON.stringify({message: "El producto no se ha podido actualizar"}),
+            { headers: { "Content-Type": "application/json" } }
+        );
+    }
+
+    return new Response(
+        JSON.stringify({message: "Articulo actualizado correctamente"}),
+        { headers: { "Content-Type": "application/json" } }
+    );
+}  
 
 export async function DELETE(request){
     const body = await request.json();
     const { data, error } = await supabase
-    .from("articulo")
+    .from("producto")
     .delete()
     .eq("id", body.id);
 
