@@ -61,6 +61,7 @@ export default function CreateProduct() {
                         placeholder="Nombre"
                         value={producto.nombre}
                         onChange={onChange}
+                        required
                     />
                 </label>
                 <br />
@@ -72,6 +73,7 @@ export default function CreateProduct() {
                         placeholder="Precio"
                         value={producto.precio}
                         onChange={onChange}
+                        required
                     />
                 </label>
                 <br />
@@ -83,6 +85,7 @@ export default function CreateProduct() {
                         placeholder="Stock"
                         value={producto.stock}
                         onChange={onChange}
+                        required
                     />
                 </label>
                 <br />
@@ -93,6 +96,7 @@ export default function CreateProduct() {
                         placeholder="Descripción"
                         value={producto.descripcion}
                         onChange={onChange}
+                        required
                     />
                 </label>
                 <br />

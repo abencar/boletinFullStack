@@ -30,7 +30,7 @@ export async function POST(request) {
     }
     
     return new Response(
-        JSON.stringify({message: "Usuario agregado correctamente"}),
+        JSON.stringify({message: "Producto agregado correctamente"}),
         { headers: { "Content-Type": "application/json" } }
     );
     
@@ -54,7 +54,7 @@ export async function PUT(request){
     }
 
     return new Response(
-        JSON.stringify({message: "Articulo actualizado correctamente"}),
+        JSON.stringify({message: "Producto actualizado correctamente"}),
         { headers: { "Content-Type": "application/json" } }
     );
 }  
@@ -67,7 +67,7 @@ export async function DELETE(request){
     .eq("id", body.id);
 
     return new Response(
-        JSON.stringify({message: "Contacto eliminado correctamente"}),
+        JSON.stringify({message: "Producto eliminado correctamente"}),
         { headers: { "Content-Type": "application/json" } }
     );
 }
