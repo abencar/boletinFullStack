@@ -47,25 +47,38 @@ export default function EventPage() {
             }
         }
 
+    const deletePastEvents = async () => {
+        const now = new Date();
+        const pastEvents = eventosFiltrados.filter(evento => new Date(evento.fecha) < now);
+        
+        for (const evento of pastEvents) {
+            await fetch("/api/event", {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ id: evento.id })
+            });
+        }
+        
+        fechtEvents();
+    };
+
     return (
         <div>
             <h1>Calendario de eventos:</h1>
-            <input 
-                type="date" 
-                value={fechaFiltro} 
-                onChange={handleFechaFiltroChange} 
-                placeholder="Filtrar por fecha" 
-            />
-            {eventosFiltrados.map((evento) => (
-                <div key={evento.id}>
-                    <Link href={`/event/${evento.id}`}>
-                        <h2>Titulo: {evento.titulo}</h2>
-                        <h3>Fecha: {evento.fecha}</h3>
-                        <h3>Ubicacion: {evento.ubicacion}</h3>
-                    </Link>
-                    <button onClick={() => deleteEvent(evento.id)}>Eliminar Evento</button>
-                </div>
-            ))}
+            <button onClick={deletePastEvents}>Eliminar eventos pasados</button>
+            {eventosFiltrados
+                .sort((a, b) => new Date(a.fecha) - new Date(b.fecha))
+                .map((evento) => (
+                    <div key={evento.id}>
+                        <Link href={`/event/${evento.id}`}>
+                            <h2>Titulo: {evento.titulo}</h2>
+                            <h3>Fecha: {evento.fecha}</h3>
+                            <h3>Ubicacion: {evento.ubicacion}</h3>
+                        </Link>
+                    </div>
+                ))}
             <Link href="/event/create">Añadir evento</Link>
         </div>
     );

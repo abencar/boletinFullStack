@@ -7,8 +7,8 @@ const supabase = createClient(supabaseUrl, supabaseKey)
 export async function GET() {
     const { data: libro, error } = await supabase.from("eventos").select("*");
 
-    if(error){ 
-        return new Response(JSON.stringify({error: "No se han podido cargar los libros"}), {status: 404}) 
+    if (error) {
+        return new Response(JSON.stringify({ error: "No se han podido cargar los libros" }), { status: 404 })
     }
 
     return new Response(
@@ -17,16 +17,54 @@ export async function GET() {
     );
 }
 
-
-export async function DELETE(request){
+export async function DELETE(request) {
     const body = await request.json();
     const { data, error } = await supabase
-    .from("eventos")
-    .delete()
-    .eq("id", body.id);
+        .from("eventos")
+        .delete()
+        .eq("id", body.id);
 
     return new Response(
-        JSON.stringify({message: "Evento eliminado correctamente"}),
+        JSON.stringify({ message: "Evento eliminado correctamente" }),
         { headers: { "Content-Type": "application/json" } }
+    );
+}
+
+export async function POST(request) {
+    const body = await request.json();
+    const fechaActual = new Date();
+
+    if (!body.titulo || !body.fecha || !body.ubicacion) {
+        return new Response(
+            JSON.stringify({ message: "Los campos titulo, fecha y ubicacion son obligatorios" }),
+            { status: 400, headers: { "Content-Type": "application/json" } }
+        );
+    }
+
+    if (new Date(body.fecha) < fechaActual) {
+        return new Response(
+            JSON.stringify({ message: "La fecha debe ser futura" }),
+            { status: 400, headers: { "Content-Type": "application/json" } }
+        );
+    }
+
+    const { data: evento, error } = await supabase.from("eventos").insert({
+        titulo: body.titulo,
+        descripcion: body.descripcion,
+        fecha: body.fecha,
+        ubicacion: body.ubicacion,
+        asistentes: body.asistentes
+    });
+
+    if (error) {
+        return new Response(
+            JSON.stringify({ message: "El evento no se ha podido agregar" }),
+            { status: 500, headers: { "Content-Type": "application/json" } }
+        );
+    }
+
+    return new Response(
+        JSON.stringify({ message: "Evento creado con éxito" }),
+        { status: 201, headers: { "Content-Type": "application/json" } }
     );
 }
