@@ -46,7 +46,7 @@ export async function DELETE(request){
     .eq("id", body.id);
 
     return new Response(
-        JSON.stringify({message: "Contacto eliminado correctamente"}),
+        JSON.stringify({message: "Libro eliminado correctamente"}),
         { headers: { "Content-Type": "application/json" } }
     );
 }
